@@ -98,13 +98,13 @@ An earlier run of the same code scored 76.4 on ALL, so run-to-run variation is s
 
 **Reproduction against the paper**
 
-![Original paper vs reproduction](figures/03_paper_vs_reproduction.png)
+![Original paper vs reproduction](graphs/03_paper_vs_reproduction.png)
 
 The reproduction trails the paper on every dataset. The gap is smallest on SE2 (-1.3) and SE15 (-1.5) and largest on SE07 (-4.0) and SE13 (-3.8).
 
-![F1 difference from the paper](figures/04_f1_difference.png)
+![F1 difference from the paper](graphs/04_f1_difference.png)
 
-![Reproduced performance per dataset](figures/05_reproduction_performance.png)
+![Reproduced performance per dataset](graphs/05_reproduction_performance.png)
 
 **Training behaviour (2 iterations)**
 
@@ -113,15 +113,15 @@ The reproduction trails the paper on every dataset. The gap is smallest on SE2 (
 | 1 | 0.721 | 67.7 |
 | 2 | 0.459 | 71.9 |
 
-![Training loss](figures/01_training_loss.png)
+![Training loss](graphs/01_training_loss.png)
 
-![SE07 development accuracy](figures/02_se07_accuracy.png)
+![SE07 development accuracy](graphs/02_se07_accuracy.png)
 
 SE07 development accuracy is the notebook's own per-epoch evaluation. It is a different measurement from the official scorer F1 on SE07 in the table above (70.3), so the two numbers are not expected to match.
 
 **Evaluation data**
 
-![Evaluation dataset sizes](figures/06_dataset_sizes.png)
+![Evaluation dataset sizes](graphs/06_dataset_sizes.png)
 
 ### Regenerating the figures
 
