@@ -1,0 +1,7 @@
+Model,Dataset,instances,Precision,Recall,F1,Fallback_exact_match,Paper F1,Difference,Scorer status,Error
+Neural,SE07,455,70.3,70.3,70.3,70.32967032967034,74.3,-4.0,official,
+Neural,SE2,2282,77.8,77.8,77.8,77.82646801051709,79.1,-1.2999999999999972,official,
+Neural,SE3,1850,75.0,75.0,75.0,75.02702702702703,77.0,-2.0,official,
+Neural,SE13,1644,75.8,75.8,75.8,75.79075425790754,79.6,-3.799999999999997,official,
+Neural,SE15,1022,78.4,78.4,78.4,78.37573385518591,79.9,-1.5,official,
+Neural,ALL,7253,76.3,76.3,76.3,76.25810009651178,78.5,-2.200000000000003,official,
