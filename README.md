@@ -10,7 +10,7 @@ A from-scratch reproduction of **Cao, Jin, Tang & Wei (2024)**, *Word Sense Disa
 |---|---|
 | `WSD_Cao2024_V12_CODE_ONLY.ipynb` | The full pipeline: data extraction, model, training, benchmark inference and official scoring |
 | `make_figures.py` | Regenerates the result figures below (matplotlib) |
-| `figures/` | The architecture diagram and the six result figures used in this README |
+| `graphs/` | The architecture diagram and the six result figures used in this README |
 | `README.md` | This file |
 
 The notebook is written to run on a Kaggle GPU session (Tesla T4).
@@ -31,6 +31,43 @@ The model scores each candidate WordNet sense of a target word against its sente
 6. **Score and loss:** dot product between context and sense vectors; cross-entropy over the candidate senses of the target word.
 
 Both BERT encoders, the KG branch and the GAT are trained jointly.
+
+## Concepts used in this work
+
+Each row names a concept, says where it appears in this project or the paper, and gives a one-line explanation.
+
+### Machine learning concepts
+
+| Concept | Where it appears | In brief |
+|---|---|---|
+| Self-attention and multi-head attention | Both BERT encoders | Every token attends to every other token, and several attention heads capture different relations, producing a context-dependent vector per token |
+| Positional encoding | BERT inputs | Position information is added to the token embeddings so word order matters (BERT learns these position embeddings instead of using fixed sinusoids) |
+| Transformer encoder | Context and gloss encoders | BERT is the encoder half of the transformer. No decoder is needed because the task is to score a fixed set of candidate senses, not to generate text |
+| Graph construction and representation learning | WordNet knowledge graph | Synsets are nodes and hypernym/hyponym links are edges; each synset gets a learnable embedding (117,659 x 128) |
+| Supervised graph neural network training | Knowledge-graph branch, `Q = A · H · O + b` | Neighbour embeddings are aggregated with learned relation weights and projected by `O`; the graph part is trained end to end with the sense-classification loss |
+| Graph convolution | Same branch | One-hop neighbourhood aggregation (`A · H`) is the core idea of GCN propagation; here it is a weighted mean over hypernyms and hyponyms |
+| Graph attention networks (GAT) | Two-layer GAT on the context side | Attention coefficients let each word node weigh its neighbours by learned relevance, so useful context is kept and noisy context is down-weighted |
+| Over-smoothing and scalability | GAT depth and KG implementation | A shallow 2-layer GAT limits over-smoothing; the 117k-node graph is stored as sparse neighbour lists rather than a dense N x N matrix |
+| Two-tower (Siamese-style) architecture | Context tower and gloss tower | Two encoders map inputs into one space and are compared by similarity. Unlike a Siamese network the two BERTs do not share weights, and training uses softmax cross-entropy over candidates, not contrastive or triplet loss |
+| Few-shot and zero-shot learning | Gloss-based sense matching | Because a sense is represented by its definition, rare senses can be scored with few or no training examples (related in spirit to few-shot learning) |
+| Discriminative modelling | Whole model | The system is discriminative: it learns `p(sense | context)` directly |
+
+### Natural language processing concepts
+
+| Concept | Where it appears | In brief |
+|---|---|---|
+| NLP pipeline and levels of linguistic analysis | Whole project | Text goes through preprocessing, lexical lookup, semantic analysis and prediction. WSD is a semantic-level task within natural language understanding |
+| Tokenization and lower casing | `bert-base-uncased` | WordPiece splits words into sub-word units; the uncased model lower-cases text first |
+| Lemmatization | Candidate sense lookup | The tagged lemma, not the surface word, is used to fetch candidate synsets from WordNet (for example `said` maps to `say`) |
+| Vector representations and cosine similarity | Hierarchy splitting and scoring | The text hierarchy splits where the two halves have the lowest cosine similarity; sense scores are dot products of L2-normalised vectors, i.e. cosine similarity scaled by a learned temperature |
+| Annotated text corpora | SemCor, Raganato benchmark | SemCor is a sense-tagged corpus built on the Brown Corpus and read through NLTK; the SemEval/Senseval sets are the test data |
+| Part-of-speech tagging | Candidate filtering | The POS tag of the target restricts candidates to senses of the right category (noun, verb, adjective, adverb) |
+| Chunking and phrase structure | Text hierarchy | The hierarchy gives sentence, phrase and word levels, similar in spirit to chunking. It is built from vector similarity, not from a syntactic parser |
+| Lexical relations: polysemy, synonymy, hypernymy, hyponymy | WordNet knowledge graph | Polysemy is the problem being solved; hypernym and hyponym relations are the graph edges |
+| WordNet and its hierarchy | Glosses and graph | Each synset has a definition (gloss) and sits in an is-a hierarchy; both are used |
+| Word sense disambiguation approaches | Whole model | This is a supervised, gloss-based approach that also uses knowledge-base structure: it compares the context with each candidate gloss and adds WordNet graph information |
+| Contextual vs static word embeddings | BERT versus word2vec | Static embeddings such as word2vec give one vector per word. BERT gives a different vector for `bank` in each sentence, which is what makes sense disambiguation possible |
+| Downstream applications | Motivation | WSD supports machine translation, question answering and information retrieval |
 
 ## Data
 
@@ -127,8 +164,8 @@ SE07 development accuracy is the notebook's own per-epoch evaluation. It is a di
 
 ```bash
 pip install matplotlib
-python make_figures.py            # writes PNGs to ./figures
-python make_figures.py my_dir     # or to another folder
+python make_figures.py graphs     # writes PNGs to ./graphs
+python make_figures.py my_dir     # or to any other folder
 ```
 
 The numbers are listed at the top of `make_figures.py`; edit them after a new run.
