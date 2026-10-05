@@ -1,0 +1,62 @@
+PROJECT REQUIREMENTS
+
+Hardware Requirements
+- NVIDIA GPU with at least 16 GB VRAM recommended
+- 16 GB RAM or higher recommended
+- 10–15 GB free storage
+- Modern multi-core CPU
+- Internet connection for downloading models, datasets, and resources
+
+Software Requirements
+- Python 3.9 or higher
+- Jupyter Notebook / Kaggle Notebook
+- Linux environment recommended
+- CUDA-enabled PyTorch
+- Git
+- Java/JDK for the Raganato evaluation framework
+
+Python Libraries
+- torch
+- transformers
+- nltk
+- numpy
+- pandas
+- scikit-learn
+- matplotlib
+- tqdm
+- huggingface_hub
+- sentencepiece
+
+NLP Resources
+- WordNet 3.0
+- SemCor annotated corpus
+- Raganato WSD Evaluation Framework
+- SE07 dataset
+- SE2 dataset
+- SE3 dataset
+- SE13 dataset
+- SE15 dataset
+
+Model Requirements
+- Pre-trained BERT language model
+- BERT Context Encoder
+- BERT Gloss Encoder
+- WordNet Knowledge Graph
+- Knowledge Graph embedding
+- Graph Attention Network (GAT)
+- Two GAT layers
+- Candidate sense representations
+- Dot-product similarity scoring
+- Softmax classification
+- Cross-entropy loss
+
+Recommended Environment
+- Kaggle Notebook
+- NVIDIA Tesla T4 GPU
+- CUDA-enabled PyTorch
+
+Installation
+pip install torch transformers nltk numpy pandas scikit-learn matplotlib tqdm huggingface_hub sentencepiece
+
+Note:
+Full training is computationally intensive and requires a GPU. The paper-faithful reproduction was trained on an NVIDIA Tesla T4 GPU.
