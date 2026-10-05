@@ -10,7 +10,7 @@ A from-scratch reproduction of **Cao, Jin, Tang & Wei (2024)**, *Word Sense Disa
 |---|---|
 | `WSD_Cao2024_V12_CODE_ONLY.ipynb` | The full pipeline: data extraction, model, training, benchmark inference and official scoring |
 | `make_figures.py` | Regenerates the result figures below (matplotlib) |
-| `figures/` | The six result figures used in this README |
+| `figures/` | The architecture diagram and the six result figures used in this README |
 | `README.md` | This file |
 
 The notebook is written to run on a Kaggle GPU session (Tesla T4).
@@ -18,6 +18,10 @@ The notebook is written to run on a Kaggle GPU session (Tesla T4).
 ## Method in brief
 
 The model scores each candidate WordNet sense of a target word against its sentence context.
+
+![Model architecture: BERT context encoder, text hierarchy, GAT, WordNet knowledge graph and gloss encoding feeding a context-gloss scoring step](graphs/WSDArchitecturewithBERT,WordNet,andGAT.png)
+
+*Architecture overview. The sentence passes through the text hierarchy and a BERT context encoder, then a two-layer GAT, to give a context vector `c`. Each candidate gloss is encoded by a second BERT and combined with the WordNet knowledge-graph embedding to give a sense vector `g_i`. Senses are scored by dot product and trained with cross-entropy.*
 
 1. **Context encoder (BERT)** encodes the sentence; the target word vector is taken from its word pieces.
 2. **Text hierarchy** recursively splits the sentence where the two halves are least similar and pools the spans around the target.
