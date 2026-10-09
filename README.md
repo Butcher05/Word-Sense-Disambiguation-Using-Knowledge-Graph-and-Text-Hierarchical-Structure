@@ -1,8 +1,5 @@
 # Word Sense Disambiguation with a Knowledge Graph and Text Hierarchy
 
-A from-scratch reproduction of **Cao, Jin, Tang & Wei (2024)**, *Word Sense Disambiguation with Knowledge Graph and Text Hierarchy* (ACM TALLIP), trained on SemCor and scored with the official Raganato WSD evaluation framework.
-
-> **Headline result:** 76.3 F1 on ALL (7,253 instances) against 78.5 reported in the paper, a gap of 2.2 points. See [Results](#results) and [Limitations](#limitations).
 
 ## What this repository contains
 
